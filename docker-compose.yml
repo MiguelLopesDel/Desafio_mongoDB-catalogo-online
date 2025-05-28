@@ -16,13 +16,21 @@ services:
       timeout: 5s
       retries: 3
 
-#  api_service:
-#    build: .
-#    depends_on:
-#      mongodb:
-#        condition: service_healthy
-#    ports:
-#      - "8080:8080"
+  api_service:
+    build: .
+    container_name: api_service
+    restart: always
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://${MONGO_USER}:${MONGO_PASS}@mongodb:27017/product-catalog?authSource=admin
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_REGION=${AWS_REGION}
+      - AWS_CATALOG_ARN=${AWS_CATALOG_ARN}
 
 volumes:
   mongo_data:

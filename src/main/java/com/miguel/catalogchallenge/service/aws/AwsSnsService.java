@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -20,7 +21,7 @@ public class AwsSnsService {
         this.catalogTopic = catalogTopic;
     }
 
-
+    @Async
     public void publish(MessageDTO messageDTO) {
         String message = messageDTO.message();
         snsClient.publish(catalogTopic.getTopicArn(), message);
